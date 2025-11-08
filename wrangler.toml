@@ -1,0 +1,9 @@
+name = "ai-conversation-worker"
+main = "src/index.ts"
+compatibility_date = "2024-05-13"
+workers_dev = true
+usage_model = "bundled"
+
+[vars]
+OPENAI_MODEL = "gpt-4o-mini"
+
