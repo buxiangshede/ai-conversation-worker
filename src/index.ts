@@ -57,13 +57,13 @@ const resolvers = {
     }
   },
   Mutation: {
-    generateResponse: async (
-      _: unknown,
-      args: { input: { message: string } },
-      context: { env: Env }
-    ) => {
-      console.log('Received message:', args.input.message);
-      const result = await callOpenAI(args.input.message, context.env);
+    generateResponse: async (params: any) => {
+      console.log('generateResponse----params', params)
+      //  _: unknown,
+      // args: { input: { message: string } },
+      // context: { env: Env }
+      // console.log('Received message:', args.input.message);
+      // const result = await callOpenAI(args.input.message, context.env);
       return { content: 'generateResponse respond' }
       // return result;
     }
