@@ -80,6 +80,12 @@ const yoga = createYoga<{ env: Env }>({
   context: ({ env }) => ({ env })
 });
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST,OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type'
+} as const;
+
 async function callOpenAI(message: string, env: Env) {
   const apiKey = env.OPENAI_API_KEY;
   if (!apiKey) {
@@ -119,5 +125,30 @@ async function callOpenAI(message: string, env: Env) {
 }
 
 export default {
-  fetch: yoga.fetch
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    if (request.method === 'OPTIONS') {
+      return new Response(null, {
+        status: 204,
+        headers: corsHeaders
+      });
+    }
+
+    const handleRequest = yoga.fetch as unknown as (
+      req: Request,
+      env: Env,
+      ctx: ExecutionContext
+    ) => Promise<Response>;
+
+    const response = await handleRequest(request, env, ctx);
+    const headers = new Headers(response.headers);
+    headers.set('Access-Control-Allow-Origin', corsHeaders['Access-Control-Allow-Origin']);
+    headers.set('Access-Control-Allow-Methods', corsHeaders['Access-Control-Allow-Methods']);
+    headers.set('Access-Control-Allow-Headers', corsHeaders['Access-Control-Allow-Headers']);
+
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers
+    });
+  }
 };
