@@ -62,6 +62,7 @@ const resolvers = {
       args: { input: { message: string } },
       context: { env: Env }
     ) => {
+      console.log('Received message:', args.input.message);
       const result = await callOpenAI(args.input.message, context.env);
       return result;
     }
@@ -108,6 +109,7 @@ async function callOpenAI(message: string, env: Env) {
       temperature: 0.7
     })
   });
+  console.log('Received response:', response);
 
   if (!response.ok) {
     const errorText = await response.text();
