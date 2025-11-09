@@ -64,7 +64,8 @@ const resolvers = {
     ) => {
       console.log('Received message:', args.input.message);
       const result = await callOpenAI(args.input.message, context.env);
-      return result;
+      return { content: 'generateResponse respond' }
+      // return result;
     }
   }
 };
