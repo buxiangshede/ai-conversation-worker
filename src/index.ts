@@ -131,7 +131,7 @@ const yoga = createYoga<GraphQLContext>({
     methods: ['GET', 'POST', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   },
-  graphqlEndpoint: '/',
+  graphqlEndpoint: '/api',
   // fetchAPI: { Request, Response, Headers }
 });
 
