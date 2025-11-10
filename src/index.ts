@@ -15,7 +15,7 @@ type GraphQLContext = {
 type ServiceStatus = {
   message: string;
   model?: string | null;
-  url?: object;
+  url?: string;
 };
 
 type ChatInput = {
@@ -77,7 +77,7 @@ async function callOpenAI(message: string, env: Env) {
   };
 }
 
-function getServiceStatus(env: Env, url: object): ServiceStatus {
+function getServiceStatus(env: Env, url: string): ServiceStatus {
   return {
     message: env.OPENAI_API_KEY ? '服务可用' : '缺少 OPENAI_API_KEY',
     model: env.OPENAI_MODEL ?? DEFAULT_MODEL,
@@ -115,7 +115,7 @@ const yoga = createYoga<GraphQLContext>({
     typeDefs,
     resolvers: {
       Query: {
-        status: (_parent, _args, context) => getServiceStatus(context.env, null)
+        status: (_parent, _args, context) => getServiceStatus(context.env, '1')
       },
       Mutation: {
         generateResponse: async (_parent, args: { input: ChatInput }, context) => {
@@ -148,7 +148,7 @@ export default {
         });
       }
 
-      return new Response(JSON.stringify(getServiceStatus(env, request)), {
+      return new Response(JSON.stringify(getServiceStatus(env, request.url)), {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
