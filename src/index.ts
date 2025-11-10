@@ -128,7 +128,7 @@ const yoga = createYoga<GraphQLContext>({
   cors: {
     origin: '*'
   },
-  graphqlEndpoint: '/graphql',
+  // graphqlEndpoint: '/graphql',
   fetchAPI: { Request, Response, Headers }
 });
 
